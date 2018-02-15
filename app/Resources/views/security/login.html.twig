@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row align-items-center mt-5">
+        <div class="text-center col-md-6 offset-md-3">
+            <form action="{{ path('login') }}" method="POST" class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+                
+                <div class="form-group">       
+                    <label for="username" class="sr-only">Identifiant</label>
+                    <input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}" placeholder="Identifiant" />
+                </div>
+                
+                <div class="form-group">       
+                    <label for="password" class="sr-only">Mot de passe</label>
+                    <input type="password" id="password" class="form-control" name="_password" placeholder="Mot de passe" />
+                </div>
+              
+                <div class="checkbox mb-2">
+                    <label>
+                        <input type="checkbox" id="remember_me" name="_remember_me" checked /> Se souvenir de moi
+                    </label>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="form-group">       
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Connexion">
+                </div>
+                
+                {% if error %}
+                    <div class="text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <hr/>
+
+                <p class="mt-5 text-muted">&copy; Bilemo {{ 'now'|date('Y') }}</p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
