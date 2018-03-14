@@ -168,6 +168,7 @@ class ApplicationController extends Controller
         // Create an empty form with only CSRF to secure application deletion
         $form = $this->get('form.factory')->create();
 
+        // On deletion confirm
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             try {
                 $client->delete($uri, [
