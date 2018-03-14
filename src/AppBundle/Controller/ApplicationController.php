@@ -175,7 +175,7 @@ class ApplicationController extends Controller
                     'headers' => $headers
                 ]);
 
-                $request->getSession()->getFlashBag()->add('success', 'Modification effectuée.');
+                $request->getSession()->getFlashBag()->add('success', 'Suppression effectuée.');
             } catch (RequestException $e) {
                 $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
             }
