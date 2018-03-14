@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="d-flex align-items-center justify-content-between">
+		<h1 class="display-4">Fabricants</h1>
+		<a href="{{ path('manufacturers_create') }}" class="btn btn-secondary">
+			<span class="fas fa-plus-square"></span> <span class="hidden-xs">Ajouter</span>
+		</a>
+	</div>
+	
+	<table class="table table-responsive-sm table-striped">
+		<caption>Liste des fabricants</caption>
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+        <tbody>            
+            {% for manufacturer in manufacturers %}
+                <tr>
+                    <td>{{ manufacturer.name }}</td>
+                    <td>
+						<a href="{{ path('manufacturers_update', { id: manufacturer.id }) }}" class="btn btn-secondary">
+							<span class="fas fa-pencil-alt"></span> <span class="hidden-xs">Modifier</span>
+						</a>
+						<a href="{{ path('manufacturers_delete', { id: manufacturer.id }) }}" class="btn btn-danger">
+							<span class="fas fa-trash"></span> <span class="hidden-xs">Supprimer</span>
+						</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
