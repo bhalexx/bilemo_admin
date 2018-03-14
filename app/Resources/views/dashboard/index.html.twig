@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row d-flex justify-content-around">
+        <div class="card text-center">
+            <div class="card-header">
+                Applications partenaires
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Gestion des applications</h5>
+                <p class="card-text">Ajouter, modifier, supprimer</p>
+                <a href="{{ path('applications') }}" class="btn btn-primary">Entrer</a>
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+                Mobiles
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Gestion des mobiles</h5>
+                <p class="card-text">Ajouter, modifier, supprimer</p>
+                <a href="#" class="btn btn-primary">Entrer</a>
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+                OS
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Gestion des OS</h5>
+                <p class="card-text">Ajouter, modifier, supprimer</p>
+                <a href="#" class="btn btn-primary">Entrer</a>
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+                Fabricants
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Gestion des fabricants</h5>
+                <p class="card-text">Ajouter, modifier, supprimer</p>
+                <a href="#" class="btn btn-primary">Entrer</a>
+            </div>
+        </div>
+
+        <div class="card text-center">
+            <div class="card-header">
+                Utilisateurs
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Gestion des utilisateurs</h5>
+                <p class="card-text">Consulter</p>
+                <a href="#" class="btn btn-primary">Entrer</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
