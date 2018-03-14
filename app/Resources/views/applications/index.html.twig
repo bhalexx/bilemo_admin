@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="d-flex align-items-center justify-content-between">
+		<h1 class="display-4">Applications partenaires</h1>
+		<a href="{{ path('applications_create') }}" class="btn btn-secondary">
+			<span class="fas fa-plus-square"></span> <span class="hidden-xs">Ajouter</span>
+		</a>
+	</div>
+	
+	<table class="table table-responsive-sm table-striped">
+		<caption>Liste des applications partenaires</caption>
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+        <tbody>            
+            {% for application in applications %}
+                <tr>
+                    <td>{{ application.username }}</td>
+                    <td>
+                    	<a href="{{ path('applications_view', { id: application.id }) }}" class="btn btn-secondary">
+							<span class="fas fa-eye"></span> <span class="hidden-xs">Voir</span>
+						</a>
+						<a href="{{ path('applications_update', { id: application.id }) }}" class="btn btn-secondary">
+							<span class="fas fa-pencil-alt"></span> <span class="hidden-xs">Modifier</span>
+						</a>
+						<a href="{{ path('applications_delete', { id: application.id }) }}" class="btn btn-danger">
+							<span class="fas fa-trash"></span> <span class="hidden-xs">Supprimer</span>
+						</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

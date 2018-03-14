@@ -16,4 +16,14 @@ parameters:
     mailer_password: ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    secret: 4bef25f5b7db3f2d84648f4d44afc42640abae35
+
+    bilemo_token_url: oauth/v2/token
+    # Client id you get from Bilemo
+    client_id: CLIENT_ID
+    # Client secret you get from Bilemo
+    client_secret: CLIENT_SECRET
+    # Your application name
+    username: USERNAME
+    # Your password
+    password: PASSWORD
