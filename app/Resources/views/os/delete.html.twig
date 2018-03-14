@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-between">
+        <h1 class="display-4"><span class="fas fa-trash"></span> {{ os.name }}</h1>
+        <a href="{{ path('os') }}" class="btn btn-secondary">
+            <span class="fas fa-list"></span> <span class="hidden-xs">Retour à la liste</span>
+        </a>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-xs-12">
+        	<p>
+        		Attention, cette action est irréversible.
+        	</p>
+
+        	<form action="{{ path('os_delete', { 'id': os.id }) }}" method="post">
+                <a href="{{ path('os') }}" class="btn btn-secondary">
+                    <span class="fas fa-hand-point-left"></span> Annuler
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <span class="fas fa-trash"></span> Supprimer
+                </button>
+                {# Generates CSRF token #}
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
