@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="d-flex align-items-center justify-content-between">
+        <h1 class="display-4"><span class="fas fa-plus-square"></span> Nouveau système d'exploitation (OS)</h1>
+        <a href="{{ path('os') }}" class="btn btn-secondary">
+            <span class="fas fa-list"></span> <span class="hidden-xs">Retour à la liste</span>
+        </a>
+    </div>
+	<hr/>
+	{% include 'os/form.html.twig' %}
+{% endblock %}

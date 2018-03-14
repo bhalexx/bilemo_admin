@@ -7,17 +7,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use AppBundle\Form\ApplicationType;
+use AppBundle\Form\OsType;
 
-class ApplicationController extends Controller
+class OsController extends Controller
 {
     /**
-     * @Route("/applications", name="applications")
+     * @Route("/os", name="os")
      */
     public function indexAction(Request $request)
     {
         $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/applications';
+        $uri = 'api/os';
         
         $headers = [
             'headers' => [
@@ -26,146 +26,116 @@ class ApplicationController extends Controller
             ]
         ];
 
-        $applications = $client->get($uri, $headers);
+        $oss = $client->get($uri, $headers);
 
-        return $this->render('applications/index.html.twig', [
-            'applications' => json_decode($applications->getBody(), true)
+        return $this->render('os/index.html.twig', [
+            'oss' => json_decode($oss->getBody(), true)
         ]);
     }
 
     /**
-     * @Route("/applications/view/{id}", name="applications_view", requirements = { "id": "\d+" })
-     */
-    public function viewAction(Request $request, $id)
-    {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/applications/'.$id;
-        
-        $headers = [
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-            ]
-        ];
-
-        $application = $client->get($uri, $headers);
-
-        return $this->render('applications/view.html.twig', [
-            'application' => json_decode($application->getBody(), true)
-        ]);
-    }
-
-    /**
-     * @Route("/applications/create", name="applications_create")
+     * @Route("/os/create", name="os_create")
      */
     public function createAction(Request $request)
     {
         $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/applications';        
+        $uri = 'api/os';        
         $headers = [
             'Content-type' => 'application/json',
             'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
         ];
 
         // Create form
-        $data = [
-            'roles' => ['ROLE_APPLICATION']
-        ];
-        $form = $this->createForm(ApplicationType::class, $data);        
+        $form = $this->createForm(OsType::class, []);        
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $newApplication = $request->request->get('application');
-            $newApplication['roles'] = [$newApplication['roles']];
+            $newOs = $request->request->get('os');
             
             try {
                 $client->post($uri, [
                     'headers' => $headers,
-                    'body' => json_encode($newApplication)
+                    'body' => json_encode($newOs)
                 ]);
 
                 $request->getSession()->getFlashBag()->add('success', 'Enregistrement effectué.');             
             } catch (RequestException $e) {                
                 $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');                
             }
-            return $this->redirectToRoute('applications');
+            return $this->redirectToRoute('os');
         }
 
-        return $this->render('applications/create.html.twig', [
+        return $this->render('os/create.html.twig', [
             'form' => $form->createView() 
         ]);
     }
 
     /**
-     * @Route("/applications/update/{id}", name="applications_update", requirements = { "id": "\d+" })
+     * @Route("/os/update/{id}", name="os_update", requirements = { "id": "\d+" })
      */
     public function updateAction(Request $request, $id)
     {
         $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/applications/'.$id;
+        $uri = 'api/os/'.$id;
         $headers = [
             'Content-type' => 'application/json',
             'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
         ];
 
-        // Get application
+        // Get OS
         $response = $client->get($uri, [
             'headers' => $headers
         ]);
-        $application = json_decode($response->getBody(), true);
+        $os = json_decode($response->getBody(), true);
 
         // Create form
         $data = [
-            'username' => $application['username'],
-            'email' => $application['email'],
-            'uri' => $application['uri'],
-            'roles' => $application['roles']
+            'name' => $os['name']
         ];
-        $form = $this->createForm(ApplicationType::class, $data);
+        $form = $this->createForm(OsType::class, $data);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $newApplication = $request->request->get('application');
-            $newApplication['roles'] = [$newApplication['roles']];
+            $newOs = $request->request->get('os');
             
             try {
                 $client->put($uri, [
                     'headers' => $headers,
-                    'body' => json_encode($newApplication)
+                    'body' => json_encode($newOs)
                 ]);
 
                 $request->getSession()->getFlashBag()->add('success', 'Modification effectuée.');
             } catch (RequestException $e) {
                 $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
             }
-            return $this->redirectToRoute('applications');      
+            return $this->redirectToRoute('os');      
         }
 
-        return $this->render('applications/update.html.twig', [
-            'application' => $application,
+        return $this->render('os/update.html.twig', [
+            'os' => $os,
             'form' => $form->createView() 
         ]);
     }
 
     /**
-     * @Route("/applications/delete/{id}", name="applications_delete", requirements = { "id": "\d+" })
+     * @Route("/os/delete/{id}", name="os_delete", requirements = { "id": "\d+" })
      */
     public function deleteAction(Request $request, $id)
     {
         $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/applications/'.$id;
+        $uri = 'api/os/'.$id;
         $headers = [
             'Content-type' => 'application/json',
             'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
         ];
 
-        // Get application
+        // Get OS
         $response = $client->get($uri, [
             'headers' => $headers
         ]);
-        $application = json_decode($response->getBody(), true);
+        $os = json_decode($response->getBody(), true);
 
-        // Create an empty form with only CSRF to secure application deletion
+        // Create an empty form with only CSRF to secure OS deletion
         $form = $this->get('form.factory')->create();
 
         // On deletion confirm
@@ -179,11 +149,11 @@ class ApplicationController extends Controller
             } catch (RequestException $e) {
                 $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
             }
-            return $this->redirectToRoute('applications');
+            return $this->redirectToRoute('os');
         }
 
-        return $this->render('applications/delete.html.twig', [
-            'application' => $application,
+        return $this->render('os/delete.html.twig', [
+            'os' => $os,
             'form' => $form->createView() 
         ]);
     }

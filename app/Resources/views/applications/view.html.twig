@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}	
+	<div class="d-flex align-items-center justify-content-between">
+        <h1 class="display-4"><span class="fas fa-eye"></span> {{ application.username }}</h1>
+        <a href="{{ path('applications') }}" class="btn btn-secondary">
+            <span class="fas fa-list"></span> <span class="hidden-xs">Retour à la liste</span>
+        </a>
+    </div>
+	<hr/>
+	<div class="card">
+	  	<div class="card-header">
+	    	Informations
+	  	</div>
+	  	<div class="card-body">
+		    <p class="card-text">
+		    	<b>Nom :</b> {{ application.username }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Email :</b> <a href="mailto:{{ application.email }}">{{ application.email }}</a>
+		    </p>
+		    <p class="card-text">
+		    	<b>URL :</b> <a href="{{ application.uri }}">{{ application.uri }}</a>
+		    </p>
+		    <p class="card-text">
+		    	<b>Rôle(s) :</b> 
+		    	{% for role in application.roles %}
+		    		{{ role }}
+		    	{% endfor %}
+		    </p>
+	  	</div>
+	  	<div class="card-footer text-muted text-right">
+		   	<a href="{{ path('applications_update', { id: application.id }) }}" class="btn btn-secondary">
+				<span class="fas fa-pencil-alt"></span> <span class="hidden-xs">Modifier</span>
+			</a>
+			<a href="{{ path('applications_delete', { id: application.id }) }}" class="btn btn-danger">
+				<span class="fas fa-trash"></span> <span class="hidden-xs">Supprimer</span>
+			</a>
+	  	</div>
+	</div>
+{% endblock %}

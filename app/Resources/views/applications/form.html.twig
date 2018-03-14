@@ -1,0 +1,24 @@
+<div class="card">
+  	<div class="card-header">
+    	Informations
+  	</div>
+  	<div class="card-body">
+  		{{ form_start(form) }}    
+		    <!-- NAME -->
+		    {{ form_row(form.username) }}
+
+		    <!-- EMAIL -->
+		    {{ form_row(form.email) }}
+
+		    <!-- URI -->
+		    {{ form_row(form.uri) }}
+
+		    <!-- ROLES -->
+		    {{ form_row(form.roles) }}
+
+		    <button type="submit" class="btn btn-primary">
+		    	<span class="fas fa-save"></span> Enregistrer
+			</button>
+		{{ form_end(form) }}
+  	</div>
+</div>

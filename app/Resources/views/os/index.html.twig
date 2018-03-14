@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="d-flex align-items-center justify-content-between">
+		<h1 class="display-4">Systèmes d'exploitation (OS)</h1>
+		<a href="{{ path('os_create') }}" class="btn btn-secondary">
+			<span class="fas fa-plus-square"></span> <span class="hidden-xs">Ajouter</span>
+		</a>
+	</div>
+	
+	<table class="table table-responsive-sm table-striped">
+		<caption>Liste des systèmes d'exploitation (OS)</caption>
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+        <tbody>            
+            {% for os in oss %}
+                <tr>
+                    <td>{{ os.name }}</td>
+                    <td>
+						<a href="{{ path('os_update', { id: os.id }) }}" class="btn btn-secondary">
+							<span class="fas fa-pencil-alt"></span> <span class="hidden-xs">Modifier</span>
+						</a>
+						<a href="{{ path('os_delete', { id: os.id }) }}" class="btn btn-danger">
+							<span class="fas fa-trash"></span> <span class="hidden-xs">Supprimer</span>
+						</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
