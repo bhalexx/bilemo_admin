@@ -20,6 +20,9 @@ Encore
     // will output as web/build/global.css
     .addStyleEntry('global', './app/Resources/assets/scss/global.scss')
 
+    //will output as web/build/mobile.js
+    .addEntry('mobile', './app/Resources/assets/js/mobile.js')
+
     // allow sass/scss files to be processed
     .enableSassLoader()
 

@@ -1,0 +1,68 @@
+<div class="card">
+  	<div class="card-header">
+    	Informations
+  	</div>
+  	<div class="card-body">
+  		{{ form_start(form) }}    
+		    <!-- NAME -->
+		    {{ form_row(form.name) }}
+
+		    <!-- MANUFACTURER -->
+		    {{ form_row(form.manufacturer) }}
+
+		    <!-- OS -->
+		    {{ form_row(form.os) }}
+
+		    <!-- PRICE -->
+		    {{ form_row(form.price) }}
+
+		    <!-- STOCK -->
+		    {{ form_row(form.stock) }}
+
+		    <!-- MEMORY -->
+		    {{ form_row(form.memory) }}
+
+		    <!-- COLOR NAME -->
+		    {{ form_row(form.color_name) }}
+
+		    <!-- COLOR CODE -->
+		    {{ form_row(form.color_code) }}
+
+		    <!-- FEATURE -->
+		    <div class="form-group">
+		    	{{ form_label(form.features, "Fonctionnalités") }}
+			    {{ form_widget(form.features) }}
+			    {% if form_errors(form.features) %}
+		            <label class="error" for="features">{{ form_errors(form.features) }}</label>
+		        {% endif %}
+		        <div class="text-right">
+				    <div class="collection-add btn btn-secondary btn-sm" data-collection="mobile_features">
+			            <span class="fas fa-plus-circle"></span> Ajouter une fonctionnalité
+			        </div>
+		        </div>
+		    </div>
+
+		    {# <!-- PICTURES -->
+		    <div class="form-group">
+		    	{{ form_label(form.pictures, "Photos") }}
+			    {{ form_widget(form.pictures) }}
+			    {% if form_errors(form.pictures) %}
+		            <label class="error" for="pictures">{{ form_errors(form.pictures) }}</label>
+		        {% endif %}
+		        <div class="text-right">
+				    <div class="collection-add btn btn-secondary btn-sm" data-collection="mobile_pictures">
+			            <span class="fas fa-plus-circle"></span> Ajouter une photo
+			        </div>
+		        </div>
+		    </div> #}
+
+		    <button type="submit" class="btn btn-primary">
+		    	<span class="fas fa-save"></span> Enregistrer
+			</button>
+		{{ form_end(form) }}
+  	</div>
+</div>
+
+{% block javascripts %}
+	<script src="{{ asset('build/mobile.js') }}"></script>
+{% endblock %}

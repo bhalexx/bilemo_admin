@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="d-flex align-items-center justify-content-between">
+		<h1 class="display-4">Mobiles</h1>
+		<a href="{{ path('mobiles_create') }}" class="btn btn-secondary">
+			<span class="fas fa-plus-square"></span> <span class="hidden-xs">Ajouter</span>
+		</a>
+	</div>
+	
+	<table class="table table-responsive-sm table-striped">
+		<caption>Liste des mobiles</caption>
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Options</th>
+			</tr>
+		</thead>
+        <tbody>            
+            {% for mobile in mobiles.data %}
+                <tr>
+                    <td>{{ mobile.name }}</td>
+                    <td>
+                    	<a href="{{ path('mobiles_view', { id: mobile.id }) }}" class="btn btn-secondary">
+							<span class="fas fa-eye"></span> <span class="hidden-xs">Voir</span>
+						</a>
+						<a href="{{ path('mobiles_update', { id: mobile.id }) }}" class="btn btn-secondary">
+							<span class="fas fa-pencil-alt"></span> <span class="hidden-xs">Modifier</span>
+						</a>
+						<a href="{{ path('mobiles_delete', { id: mobile.id }) }}" class="btn btn-danger">
+							<span class="fas fa-trash"></span> <span class="hidden-xs">Supprimer</span>
+						</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>        
+    </table>
+    {% if mobiles.meta.total_pages > 1 %}
+    	<hr/>
+    	<nav aria-label="Page navigation example">
+			<ul class="pagination justify-content-center">
+				{% for i in 1..mobiles.meta.total_pages %}
+					<li class="page-item {% if i == app.request.attributes.get('_route_params')['page'] %}active{% endif %}">
+						<a class="page-link" href="{{ path('mobiles', { page: i }) }}">{{ i }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</nav>
+	{% endif %}
+{% endblock %}

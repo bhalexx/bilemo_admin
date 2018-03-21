@@ -3,33 +3,21 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use AppBundle\Form\ManufacturerType;
 
-class ManufacturerController extends Controller
+class ManufacturerController extends BaseController
 {
     /**
      * @Route("/manufacturers", name="manufacturers")
      */
     public function indexAction(Request $request)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/manufacturers';
-        
-        $headers = [
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-            ]
-        ];
-
-        $manufacturers = $client->get($uri, $headers);
+        $manufacturers = $this->request($uri);
 
         return $this->render('manufacturers/index.html.twig', [
-            'manufacturers' => json_decode($manufacturers->getBody(), true)
+            'manufacturers' => $manufacturers
         ]);
     }
 
@@ -38,12 +26,7 @@ class ManufacturerController extends Controller
      */
     public function createAction(Request $request)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/manufacturers';        
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
+        $uri = 'api/manufacturers';
 
         // Create form
         $form = $this->createForm(ManufacturerType::class, []);        
@@ -53,14 +36,10 @@ class ManufacturerController extends Controller
             $newManufacturer = $request->request->get('manufacturer');
             
             try {
-                $client->post($uri, [
-                    'headers' => $headers,
-                    'body' => json_encode($newManufacturer)
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Enregistrement effectué.');             
+                $this->request($uri, 'POST', $newManufacturer);
+                $this->feedBack($request, "success", "Le nouveau fabricant a correctement été enregistré.");             
             } catch (RequestException $e) {                
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');                
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement du nouveau fabricant.");                
             }
             return $this->redirectToRoute('manufacturers');
         }
@@ -75,38 +54,23 @@ class ManufacturerController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/manufacturers/'.$id;
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
 
         // Get manufacturer
-        $response = $client->get($uri, [
-            'headers' => $headers
-        ]);
-        $manufacturer = json_decode($response->getBody(), true);
+        $manufacturer = $this->request($uri);
 
         // Create form
-        $data = [
-            'name' => $manufacturer['name']
-        ];
-        $form = $this->createForm(ManufacturerType::class, $data);
+        $form = $this->createForm(ManufacturerType::class, $manufacturer);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newManufacturer = $request->request->get('manufacturer');
             
             try {
-                $client->put($uri, [
-                    'headers' => $headers,
-                    'body' => json_encode($newManufacturer)
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Modification effectuée.');
+                $this->request($uri, 'PUT', $newManufacturer);
+                $this->feedBack($request, "success", "Le fabricant a correctement été modifié.");
             } catch (RequestException $e) {
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification du fabricant.");
             }
             return $this->redirectToRoute('manufacturers');      
         }
@@ -122,18 +86,10 @@ class ManufacturerController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/manufacturers/'.$id;
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
 
         // Get manufacturer
-        $response = $client->get($uri, [
-            'headers' => $headers
-        ]);
-        $manufacturer = json_decode($response->getBody(), true);
+        $manufacturer = $this->request($uri);
 
         // Create an empty form with only CSRF to secure manufacturer deletion
         $form = $this->get('form.factory')->create();
@@ -141,13 +97,10 @@ class ManufacturerController extends Controller
         // On deletion confirm
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             try {
-                $client->delete($uri, [
-                    'headers' => $headers
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Suppression effectuée.');
+                $this->request($uri, 'DELETE');
+                $this->feedBack($request, "success", "La suppression du fabricant s'est correctement effectuée.");
             } catch (RequestException $e) {
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la suppression du fabricant.");
             }
             return $this->redirectToRoute('manufacturers');
         }

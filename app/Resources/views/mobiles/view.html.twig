@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}	
+	<div class="d-flex align-items-center justify-content-between">
+        <h1 class="display-4"><span class="fas fa-eye"></span> {{ mobile.name }}</h1>
+        <a href="{{ path('mobiles') }}" class="btn btn-secondary">
+            <span class="fas fa-list"></span> <span class="hidden-xs">Retour à la liste</span>
+        </a>
+    </div>
+	
+	<hr/>
+	
+	<div class="card">
+	  	<div class="card-header">
+	    	Informations
+	  	</div>
+	  	<div class="card-body">
+	  		<div id="slider" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        {% for picture in mobile.pictures %}
+                            <li data-target="#slider" data-slide-to="{{ loop.index0 }}" {% if loop.first %}class="active"{% endif %}></li>
+                        {% endfor %}
+                    </ol>
+                    <div class="carousel-inner">
+                        {% for picture in mobile.pictures %}
+                            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                <img class="d-block w-25 mr-auto ml-auto" src="{{ picture.path }}" alt="{{ mobile.name }}">
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
+                        <span class="fas fa-angle-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#slider" role="button" data-slide="next">
+                        <span class="fas fa-angle-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+		    <p class="card-text">
+		    	<b>Nom :</b> {{ mobile.name }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Fabricant :</b> {{ mobile.manufacturer.name }}
+		    </p>
+		    <p class="card-text">
+		    	<b>OS :</b> {{ mobile.os.name }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Prix :</b> {{ mobile.price }} €
+		    </p>
+		    <p class="card-text">
+		    	<b>Stock :</b> {{ mobile.stock }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Mémoire :</b> {{ mobile.memory }} Go
+		    </p>
+		    <p class="card-text">
+		    	<b>Nom couleur :</b> {{ mobile.color_name }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Code couleur (hexa) :</b> {{ mobile.color_code }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Fonctionnalités :</b>
+		    	<ul class="list-group">
+		    		{% for feature in mobile.features %}
+		    			<li class="list-group-item">
+		    				<b>{{ feature.name }}</b> : {{ feature.value }}
+		    			</li>
+		    		{% endfor %}
+		    	</ul>
+		    </p>
+	  	</div>
+	  	<div class="card-footer text-muted text-right">
+		   	<a href="{{ path('mobiles_update', { id: mobile.id }) }}" class="btn btn-secondary">
+				<span class="fas fa-pencil-alt"></span> <span class="hidden-xs">Modifier</span>
+			</a>
+			<a href="{{ path('mobiles_delete', { id: mobile.id }) }}" class="btn btn-danger">
+				<span class="fas fa-trash"></span> <span class="hidden-xs">Supprimer</span>
+			</a>
+	  	</div>
+	</div>
+{% endblock %}

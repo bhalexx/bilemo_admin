@@ -3,33 +3,22 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use AppBundle\Form\ApplicationType;
+use AppBundle\Handler\ApplicationHandler;
 
-class ApplicationController extends Controller
+class ApplicationController extends BaseController
 {
     /**
      * @Route("/applications", name="applications")
      */
     public function indexAction(Request $request)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/applications';
-        
-        $headers = [
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-            ]
-        ];
-
-        $applications = $client->get($uri, $headers);
+        $applications = $this->request($uri);
 
         return $this->render('applications/index.html.twig', [
-            'applications' => json_decode($applications->getBody(), true)
+            'applications' => $applications
         ]);
     }
 
@@ -38,20 +27,11 @@ class ApplicationController extends Controller
      */
     public function viewAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/applications/'.$id;
-        
-        $headers = [
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-            ]
-        ];
-
-        $application = $client->get($uri, $headers);
+        $application = $this->request($uri);
 
         return $this->render('applications/view.html.twig', [
-            'application' => json_decode($application->getBody(), true)
+            'application' => $application
         ]);
     }
 
@@ -60,12 +40,7 @@ class ApplicationController extends Controller
      */
     public function createAction(Request $request)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/applications';        
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
+        $uri = 'api/applications'; 
 
         // Create form
         $data = [
@@ -75,18 +50,14 @@ class ApplicationController extends Controller
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $newApplication = $request->request->get('application');
-            $newApplication['roles'] = [$newApplication['roles']];
-            
+            $handler = new ApplicationHandler();
+            $newApplication = $handler->handle($request->request->get('application'));
+                        
             try {
-                $client->post($uri, [
-                    'headers' => $headers,
-                    'body' => json_encode($newApplication)
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Enregistrement effectué.');             
+                $this->request($uri, 'POST', $newApplication);
+                $this->feedBack($request, "success", "La nouvelle application partenaire a correctement été enregistrée.");             
             } catch (RequestException $e) {                
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');                
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement de la nouvelle application partenaire.");                
             }
             return $this->redirectToRoute('applications');
         }
@@ -101,42 +72,22 @@ class ApplicationController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/applications/'.$id;
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
-
-        // Get application
-        $response = $client->get($uri, [
-            'headers' => $headers
-        ]);
-        $application = json_decode($response->getBody(), true);
+        $application = $this->request($uri);
 
         // Create form
-        $data = [
-            'username' => $application['username'],
-            'email' => $application['email'],
-            'uri' => $application['uri'],
-            'roles' => $application['roles']
-        ];
-        $form = $this->createForm(ApplicationType::class, $data);
+        $form = $this->createForm(ApplicationType::class, $application);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
-            $newApplication = $request->request->get('application');
-            $newApplication['roles'] = [$newApplication['roles']];
+            $handler = new ApplicationHandler();
+            $newApplication = $handler->handle($request->request->get('application'));
             
             try {
-                $client->put($uri, [
-                    'headers' => $headers,
-                    'body' => json_encode($newApplication)
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Modification effectuée.');
+                $application = $this->request($uri, 'PUT', $newApplication);
+                $this->feedBack($request, "success", "L'application partenaire a correctement été modifiée.");
             } catch (RequestException $e) {
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification de l'application partenaire.");
             }
             return $this->redirectToRoute('applications');      
         }
@@ -152,18 +103,8 @@ class ApplicationController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/applications/'.$id;
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
-
-        // Get application
-        $response = $client->get($uri, [
-            'headers' => $headers
-        ]);
-        $application = json_decode($response->getBody(), true);
+        $application = $this->request($uri);
 
         // Create an empty form with only CSRF to secure application deletion
         $form = $this->get('form.factory')->create();
@@ -171,13 +112,10 @@ class ApplicationController extends Controller
         // On deletion confirm
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             try {
-                $client->delete($uri, [
-                    'headers' => $headers
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Suppression effectuée.');
+                $application = $this->request($uri, 'DELETE');
+                $this->feedBack($request, "success", "La suppression de l'application partenaire s'est correctement effectuée.");
             } catch (RequestException $e) {
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la suppression de l'application partenaire.");
             }
             return $this->redirectToRoute('applications');
         }
