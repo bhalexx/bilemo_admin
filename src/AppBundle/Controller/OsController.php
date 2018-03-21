@@ -3,33 +3,24 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use AppBundle\Form\OsType;
 
-class OsController extends Controller
+class OsController extends BaseController
 {
     /**
      * @Route("/os", name="os")
      */
     public function indexAction(Request $request)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/os';
-        
-        $headers = [
-            'headers' => [
-                'Content-type' => 'application/json',
-                'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-            ]
-        ];
 
-        $oss = $client->get($uri, $headers);
+        $oss = $this->request($uri);
 
         return $this->render('os/index.html.twig', [
-            'oss' => json_decode($oss->getBody(), true)
+            'oss' => $oss
         ]);
     }
 
@@ -38,12 +29,7 @@ class OsController extends Controller
      */
     public function createAction(Request $request)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
-        $uri = 'api/os';        
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
+        $uri = 'api/os';
 
         // Create form
         $form = $this->createForm(OsType::class, []);        
@@ -53,14 +39,10 @@ class OsController extends Controller
             $newOs = $request->request->get('os');
             
             try {
-                $client->post($uri, [
-                    'headers' => $headers,
-                    'body' => json_encode($newOs)
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Enregistrement effectué.');             
+                $this->request($uri, 'POST', $newOs);
+                $this->feedBack($request, "success", "Le nouveau système d'exploitation a correctement été enregistré.");             
             } catch (RequestException $e) {                
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');                
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la création du nouveau système d'exploitation.");                
             }
             return $this->redirectToRoute('os');
         }
@@ -75,38 +57,23 @@ class OsController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/os/'.$id;
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
 
         // Get OS
-        $response = $client->get($uri, [
-            'headers' => $headers
-        ]);
-        $os = json_decode($response->getBody(), true);
+        $os = $this->request($uri);
 
         // Create form
-        $data = [
-            'name' => $os['name']
-        ];
-        $form = $this->createForm(OsType::class, $data);
+        $form = $this->createForm(OsType::class, $os);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newOs = $request->request->get('os');
             
             try {
-                $client->put($uri, [
-                    'headers' => $headers,
-                    'body' => json_encode($newOs)
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Modification effectuée.');
+                $this->request($uri, 'PUT', $newOs);
+                $this->feedBack($request, "success", "Le système d'exploitation a correctement été modifié.");
             } catch (RequestException $e) {
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification du système d'exploitation.");
             }
             return $this->redirectToRoute('os');      
         }
@@ -122,18 +89,10 @@ class OsController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        $client = $this->get('csa_guzzle.client.bilemo_api');
         $uri = 'api/os/'.$id;
-        $headers = [
-            'Content-type' => 'application/json',
-            'Authorization' => 'Bearer '.$this->get('session')->get('access_token')
-        ];
 
         // Get OS
-        $response = $client->get($uri, [
-            'headers' => $headers
-        ]);
-        $os = json_decode($response->getBody(), true);
+        $os = $this->request($uri);
 
         // Create an empty form with only CSRF to secure OS deletion
         $form = $this->get('form.factory')->create();
@@ -141,13 +100,10 @@ class OsController extends Controller
         // On deletion confirm
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             try {
-                $client->delete($uri, [
-                    'headers' => $headers
-                ]);
-
-                $request->getSession()->getFlashBag()->add('success', 'Suppression effectuée.');
+                $this->request($uri, 'DELETE');
+                $this->feedBack($request, "success", "La suppression du système d'exploitation s'est correctement effectuée.");
             } catch (RequestException $e) {
-                $request->getSession()->getFlashBag()->add('error', 'Une erreur est survenue.');
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la suppression du système d'exploitation.");
             }
             return $this->redirectToRoute('os');
         }

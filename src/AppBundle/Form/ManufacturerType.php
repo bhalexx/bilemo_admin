@@ -16,7 +16,10 @@ class ManufacturerType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'constraints' => new Length(['min' => 2]),
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['min' => 2]),
+                ]
             ])
         ;
     }
