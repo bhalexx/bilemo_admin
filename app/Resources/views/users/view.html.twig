@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}	
+	<div class="d-flex align-items-center justify-content-between">
+        <h1 class="display-4"><span class="fas fa-eye"></span> {{ user.firstname }} {{ user.lastname }}</h1>
+        <a href="{{ path('users') }}" class="btn btn-secondary">
+            <span class="fas fa-list"></span> <span class="hidden-xs">Retour à la liste</span>
+        </a>
+    </div>
+	<hr/>
+	<div class="card">
+	  	<div class="card-header">
+	    	Informations
+	  	</div>
+	  	<div class="card-body">
+		    <p class="card-text">
+		    	<b>Prénom :</b> {{ user.firstname }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Nom :</b> {{ user.lastname }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Nom d'utilisateur :</b> {{ user.username }}
+		    </p>
+		    <p class="card-text">
+		    	<b>Email :</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+		    </p>
+		    <p class="card-text">
+		    	<b>Téléphone :</b> <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
+		    </p>
+		    <p class="card-text">
+		    	<b>Inscrit(e) sur :</b> 
+		    	{% for application in user.applications %}
+		    		<a href="{{ path('applications_view', { id: application.id }) }}">{{ application.username }}</a>
+		    	{% endfor %}
+		    </p>
+	  	</div>
+	</div>
+{% endblock %}

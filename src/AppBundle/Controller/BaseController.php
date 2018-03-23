@@ -9,15 +9,6 @@ use GuzzleHttp\Exception\RequestException;
 
 class BaseController extends Controller
 {
-    protected $client; 
-    protected $headers;
-
-    // public function __construct()
-    // {
-    //     $this->client = $this->getHttpClient();
-    //     $this->headers = $this->getHeaders();
-    // }
-
     protected function getHttpClient()
     {
         return $this->get('csa_guzzle.client.bilemo_api');

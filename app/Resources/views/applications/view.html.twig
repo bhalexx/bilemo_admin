@@ -28,6 +28,9 @@
 		    		{{ role }}
 		    	{% endfor %}
 		    </p>
+		    <p class="card-text">
+		    	<b>Nombre d'utilisateurs :</b> {{ application.users|length }}
+		    </p>
 	  	</div>
 	  	<div class="card-footer text-muted text-right">
 		   	<a href="{{ path('applications_update', { id: application.id }) }}" class="btn btn-secondary">

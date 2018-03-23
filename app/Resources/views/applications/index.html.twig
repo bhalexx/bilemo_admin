@@ -13,6 +13,7 @@
 		<thead>
 			<tr>
 				<th>Nom</th>
+				<th>Utilisateurs</th>
 				<th>Options</th>
 			</tr>
 		</thead>
@@ -20,6 +21,7 @@
             {% for application in applications %}
                 <tr>
                     <td>{{ application.username }}</td>
+                    <td>{{ application.users|length }}</td>
                     <td>
                     	<a href="{{ path('applications_view', { id: application.id }) }}" class="btn btn-secondary">
 							<span class="fas fa-eye"></span> <span class="hidden-xs">Voir</span>
