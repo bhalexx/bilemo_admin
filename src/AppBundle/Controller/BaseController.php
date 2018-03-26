@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
-class BaseController extends Controller
+abstract class BaseController extends Controller
 {
     protected function getHttpClient()
     {
