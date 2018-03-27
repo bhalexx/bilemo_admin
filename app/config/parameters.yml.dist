@@ -18,6 +18,7 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret: 4bef25f5b7db3f2d84648f4d44afc42640abae35
 
+    bilemo_api_url: API_URL
     bilemo_token_url: oauth/v2/token
     # Client id you get from Bilemo
     client_id: CLIENT_ID
