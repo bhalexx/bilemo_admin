@@ -44,7 +44,3 @@ monolog:
 csa_guzzle:
     profiler: '%kernel.debug%'
     logger: true
-    clients:
-        bilemo_api:
-            config:
-                base_uri: http://localhost/symfony/bilemo/api/web/app_dev.php/

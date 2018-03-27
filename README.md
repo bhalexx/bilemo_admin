@@ -1,72 +1,69 @@
-Symfony Standard Edition
-========================
+# OpenMobileRooms
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+### Introduction
+This project is the Bilemo administration application using [Bilemo REST API][1] as part of my 7th [OpenClassRooms](https://openclassrooms.com/) PHP/Symfony Developer project. This application is built with **Symfony 3.4**.
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+Read instructions below to fork this application.
 
-What's inside?
---------------
+### Prerequisites
+- PHP >=5.5.9
+- MySQL
+- [Composer][2] to install Symfony 3.4 and project dependencies
 
-The Symfony Standard Edition is configured with the following defaults:
+### Dependencies
+This project uses:
+- [CsaGuzzleBundle][3] a PHP HTTP client that makes it easy to send HTTP requests to call Bilemo API
 
-  * An AppBundle you can use to start coding;
+This dependency is included in composer.json.
 
-  * Twig as the only configured template engine;
+This project also uses:
+- [WebPack Encore][4] for assets management
+- [bootstrap-sass][5] Bootstrap SASS library
+- [sass-loader][6] to compile your SCSS files to CSS
 
-  * Doctrine ORM/DBAL;
+Those dependencies are included in package.json
 
-  * Swiftmailer;
+### Installation
+First of all, follow [Bilemo API instructions][7] to add your application as a Bilemo admin application and get credentials you will need later:
+```
+client_id: {YourClientId}
+client_secret: {YourClientSecret}
+username: {YourApplicationName}
+password: {YourPassword}
+```
+Once you got your credentials, you can go on:
 
-  * Annotations enabled for everything.
+1. Clone this repository on your local machine by using this command line in your folder `git clone https://github.com/bhalexx/bilemo_admin.git`.
+2. Rename `app/config/parameters.yml.dist` in `app/config/parameters.yml`, edit database parameters with yours and fill parameters with the credentials you got from Bilemo API.
+3. Edit API URI (e.g.: URI from your forked [API project][1]) from `config(_dev).yml` in `csa_guzzle` section (parameter `base_uri`).
+5. In project folder open a new terminal window and execute command line `composer install`. 
+6. Then execute command line `npm install` to install node modules for assets management.
 
-It comes pre-configured with the following bundles:
+**Your project is ready to be run!**
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+### Customization
+Assets are located in `app\Resources\assets`, and minified and built by Encore in `web\build`. To add/edit or any other configuration customization, look at `webpack.config.js`!
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+You can modify the max number of mobiles by editing `mobile_limit` in `config.yml`.
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+### Documentation
+This application project is as documented as possible, so you can find:
+- some [diagrams][8] to explain how the application communicates with the API
+- [API documentation][9]
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
+### Related projects
+Two other projects were created to complete this 7th project:
+- [Bilemo][10] - the Bilemo REST API
+- [OpenMobileRooms][11] - a Bilemo B2B partner application
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev env) - Adds code generation
-    capabilities
-
-  * [**WebServerBundle**][14] (in dev env) - Adds commands for running applications
-    using the PHP built-in web server
-
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.4/setup.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.4/doctrine.html
-[8]:  https://symfony.com/doc/3.4/templating.html
-[9]:  https://symfony.com/doc/3.4/security.html
-[10]: https://symfony.com/doc/3.4/email.html
-[11]: https://symfony.com/doc/3.4/logging.html
-[13]: https://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
-[14]: https://symfony.com/doc/current/setup/built_in_web_server.html
+[1]: https://github.com/bhalexx/bilemo
+[2]: https://getcomposer.org/
+[3]: https://github.com/csarrazi/CsaGuzzleBundle
+[4]: https://github.com/symfony/webpack-encore
+[5]: https://github.com/twbs/bootstrap-sass
+[6]: https://github.com/webpack-contrib/sass-loader
+[7]: https://github.com/bhalexx/bilemo#authentication-to-access-api
+[8]: https://github.com/bhalexx/bilemo_admin/tree/master/diagrams
+[9]: https://github.com/bhalexx/bilemo#documentation
+[10]: https://github.com/bhalexx/bilemo
+[11]: https://github.com/bhalexx/openmobilerooms

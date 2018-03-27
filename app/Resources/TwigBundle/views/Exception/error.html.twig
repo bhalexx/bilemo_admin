@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+                  
+{% block title %}
+{{ parent() }} Erreur
+{% endblock %}
+
+{% block body %}
+  <section class="jumbotron text-center">
+      <div class="container">
+          <h1 class="display-4">Oops</h1>
+          <p class="lead text-muted mb-4">
+            Une erreur s'est produite. Nous travaillons pour y remédier au plus vite.
+          </p>
+          <p>
+            <a href="{{ path('dashboard') }}" class="btn btn-primary btn-lg">
+              Revenir à l'accueil
+            </a>
+          </p>
+      </div>
+  </section>
+{% endblock %}
