@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use AppBundle\Entity\Mobile;
 use AppBundle\Form\MobileType;
 use AppBundle\Handler\MobileHandler;
 
@@ -21,8 +22,8 @@ class MobileController extends BaseController
      */
     public function indexAction(Request $request, $page)
     {
-        $uri = sprintf('api/mobiles?limit=%d&offset=%s', $this->container->getParameter('mobile_limit'), $page);
-        
+        $uri = sprintf('api/mobiles?limit=%d&offset=%s', Mobile::NUMBER_OF_ITEMS, $page);
+
         $mobiles = $this->request($uri);
 
         return $this->render('mobiles/index.html.twig', [
@@ -65,15 +66,15 @@ class MobileController extends BaseController
             $newMobile = $handler->handle($request->request->get('mobile'), $manufacturers, $oss);
             try {
                 $this->request($uri, 'POST', $newMobile);
-                $this->feedBack($request, "success", "Le nouveau mobile a correctement été enregistré.");             
+                $this->feedBack($request, "success", "Le nouveau mobile a correctement été enregistré.");
                 return $this->redirectToRoute('mobiles');
-            } catch (RequestException $e) {                
+            } catch (RequestException $e) {
                 $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement du nouveau mobile.");
             }
         }
 
         return $this->render('mobiles/create.html.twig', [
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -91,7 +92,7 @@ class MobileController extends BaseController
         // Create form
         $mobile['manufacturers'] = $manufacturers;
         $mobile['oss'] = $oss;
-        $form = $this->createForm(MobileType::class, $mobile);        
+        $form = $this->createForm(MobileType::class, $mobile);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
@@ -99,16 +100,16 @@ class MobileController extends BaseController
             $newMobile = $handler->handle($request->request->get('mobile'), $manufacturers, $oss);
             try {
                 $this->request($uri, 'PUT', $newMobile);
-                $this->feedBack($request, "success", "Le mobile a correctement été modifié.");             
+                $this->feedBack($request, "success", "Le mobile a correctement été modifié.");
                 return $this->redirectToRoute('mobiles');
-            } catch (RequestException $e) {                
+            } catch (RequestException $e) {
                 $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification du mobile.");
             }
         }
 
         return $this->render('mobiles/update.html.twig', [
             'mobile' => $mobile,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -138,7 +139,7 @@ class MobileController extends BaseController
 
         return $this->render('mobiles/delete.html.twig', [
             'mobile' => $mobile,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 }
