@@ -1,4 +1,4 @@
-# OpenMobileRooms
+# Bilemo admin
 
 ### Introduction
 This project is the Bilemo administration application using [Bilemo REST API][1] as part of my 7th [OpenClassRooms](https://openclassrooms.com/) PHP/Symfony Developer project. This application is built with **Symfony 3.4**. A working demo can be found [here](https://www.bilemoadmin.bhalexx.me) (admin credentials: `bilemo` - `pwdbilemo`).
