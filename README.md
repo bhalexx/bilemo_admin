@@ -1,9 +1,9 @@
 # OpenMobileRooms
 
 ### Introduction
-This project is the Bilemo administration application using [Bilemo REST API][1] as part of my 7th [OpenClassRooms](https://openclassrooms.com/) PHP/Symfony Developer project. This application is built with **Symfony 3.4**.
+This project is the Bilemo administration application using [Bilemo REST API][1] as part of my 7th [OpenClassRooms](https://openclassrooms.com/) PHP/Symfony Developer project. This application is built with **Symfony 3.4**. A working demo can be found [here](https://www.bilemoadmin.bhalexx.me) (admin credentials: `bilemo` - `pwdbilemo`).
 
-Read instructions below to fork this application.
+Read instructions below to fork this admin application.
 
 ### Prerequisites
 - PHP >=5.5.9
@@ -49,15 +49,12 @@ You can modify the max number of mobiles by editing `NUMBER_OF_ITEMS` constant v
 ### Documentation
 This application communicates with [Bilemo API][1] so an OAuth2 authentication is needed to access to API endpoints. Bilemo admin application credentials are defined in `parameters.yml`.
 
-
-This application project is as documented as possible, so you can find:
-- some [diagrams][8] to explain how the application communicates with the API
-- [API documentation][9]
+Please refer to [Bilemo API project][1] and [API documentation][8].
 
 ### Related projects
 Two other projects were created to complete this 7th project:
-- [Bilemo][10] - the Bilemo REST API
-- [OpenMobileRooms][11] - a Bilemo B2B partner application
+- [Bilemo][9] - the Bilemo REST API
+- [OpenMobileRooms][10] - a Bilemo B2B partner application
 
 [1]: https://github.com/bhalexx/bilemo
 [2]: https://getcomposer.org/
@@ -66,7 +63,6 @@ Two other projects were created to complete this 7th project:
 [5]: https://github.com/twbs/bootstrap-sass
 [6]: https://github.com/webpack-contrib/sass-loader
 [7]: https://github.com/bhalexx/bilemo#become-a-bilemo-admin
-[8]: https://github.com/bhalexx/bilemo_admin/tree/master/diagrams
-[9]: https://github.com/bhalexx/bilemo#documentation
-[10]: https://github.com/bhalexx/bilemo
-[11]: https://github.com/bhalexx/openmobilerooms
+[8]: https://github.com/bhalexx/bilemo#documentation
+[9]: https://github.com/bhalexx/bilemo
+[10]: https://github.com/bhalexx/openmobilerooms
