@@ -32,23 +32,23 @@ class OsController extends BaseController
         $uri = 'api/os';
 
         // Create form
-        $form = $this->createForm(OsType::class, []);        
+        $form = $this->createForm(OsType::class, []);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newOs = $request->request->get('os');
-            
+
             try {
                 $this->request($uri, 'POST', $newOs);
-                $this->feedBack($request, "success", "Le nouveau système d'exploitation a correctement été enregistré.");             
-            } catch (RequestException $e) {                
-                $this->feedBack($request, "danger", "Une erreur est survenue lors de la création du nouveau système d'exploitation.");                
+                $this->feedBack($request, "success", "Le nouveau système d'exploitation a correctement été enregistré.");
+            } catch (RequestException $e) {
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de la création du nouveau système d'exploitation.");
             }
             return $this->redirectToRoute('os');
         }
 
         return $this->render('os/create.html.twig', [
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -68,19 +68,19 @@ class OsController extends BaseController
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newOs = $request->request->get('os');
-            
+
             try {
                 $this->request($uri, 'PUT', $newOs);
                 $this->feedBack($request, "success", "Le système d'exploitation a correctement été modifié.");
             } catch (RequestException $e) {
                 $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification du système d'exploitation.");
             }
-            return $this->redirectToRoute('os');      
+            return $this->redirectToRoute('os');
         }
 
         return $this->render('os/update.html.twig', [
             'os' => $os,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -110,7 +110,7 @@ class OsController extends BaseController
 
         return $this->render('os/delete.html.twig', [
             'os' => $os,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 }

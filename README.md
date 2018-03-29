@@ -47,6 +47,9 @@ Assets are located in `app\Resources\assets`, and minified and built by Encore i
 You can modify the max number of mobiles by editing `NUMBER_OF_ITEMS` constant value in the `AppBundle\Entity\Mobile.php file`.
 
 ### Documentation
+This application communicates with [Bilemo API][1] so an OAuth2 authentication is needed to access to API endpoints. Bilemo admin application credentials are defined in `parameters.yml`.
+
+
 This application project is as documented as possible, so you can find:
 - some [diagrams][8] to explain how the application communicates with the API
 - [API documentation][9]

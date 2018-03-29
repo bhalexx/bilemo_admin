@@ -21,7 +21,7 @@ class MobileHandler
             }
         }
         $mobile['manufacturer'] = $manufacturer;
-         
+
         //Set OS object to mobile
         $os = null;
         foreach($oss as $obj) {

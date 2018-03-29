@@ -24,7 +24,7 @@
 
 		private $accessToken;
 		private $refreshToken;
-		private $expirationTime;    
+		private $expirationTime;
 
 	    public function __construct(Client $client, $bilemoTokenUrl, $clientId, $clientSecret, $username, $password, $session)
 	    {
@@ -40,7 +40,7 @@
 	    public function onKernelController(FilterControllerEvent $event)
 	    {
 	        $controller = $event->getController();
-	        
+
 	        /*
 	         * $controller passed can be either a class or a Closure.
 	         * This is not usual in Symfony but it may happen.
