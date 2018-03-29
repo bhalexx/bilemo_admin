@@ -35,7 +35,7 @@ Once you got your credentials, you can go on:
 
 1. Clone this repository on your local machine by using this command line in your folder `git clone https://github.com/bhalexx/bilemo_admin.git`.
 2. Rename `app/config/parameters.yml.dist` in `app/config/parameters.yml`, edit database parameters with yours and fill parameters with the credentials you got from Bilemo API.
-3. Edit API URI (e.g.: URI from your forked [API project][1]) from `config(_dev).yml` in `csa_guzzle` section (parameter `base_uri`).
+3. Edit API URI (e.g.: URI from your forked [API project][1]) from `parameters.yml` (parameter `bilemo_api_url`).
 5. In project folder open a new terminal window and execute command line `composer install`.
 6. Then execute command line `npm install` to install node modules for assets management.
 
