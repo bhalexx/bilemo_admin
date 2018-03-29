@@ -29,23 +29,23 @@ class ManufacturerController extends BaseController
         $uri = 'api/manufacturers';
 
         // Create form
-        $form = $this->createForm(ManufacturerType::class, []);        
+        $form = $this->createForm(ManufacturerType::class, []);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newManufacturer = $request->request->get('manufacturer');
-            
+
             try {
                 $this->request($uri, 'POST', $newManufacturer);
-                $this->feedBack($request, "success", "Le nouveau fabricant a correctement été enregistré.");             
-            } catch (RequestException $e) {                
-                $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement du nouveau fabricant.");                
+                $this->feedBack($request, "success", "Le nouveau fabricant a correctement été enregistré.");
+            } catch (RequestException $e) {
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement du nouveau fabricant.");
             }
             return $this->redirectToRoute('manufacturers');
         }
 
         return $this->render('manufacturers/create.html.twig', [
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -65,19 +65,19 @@ class ManufacturerController extends BaseController
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newManufacturer = $request->request->get('manufacturer');
-            
+
             try {
                 $this->request($uri, 'PUT', $newManufacturer);
                 $this->feedBack($request, "success", "Le fabricant a correctement été modifié.");
             } catch (RequestException $e) {
                 $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification du fabricant.");
             }
-            return $this->redirectToRoute('manufacturers');      
+            return $this->redirectToRoute('manufacturers');
         }
 
         return $this->render('manufacturers/update.html.twig', [
             'manufacturer' => $manufacturer,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -107,7 +107,7 @@ class ManufacturerController extends BaseController
 
         return $this->render('manufacturers/delete.html.twig', [
             'manufacturer' => $manufacturer,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 }

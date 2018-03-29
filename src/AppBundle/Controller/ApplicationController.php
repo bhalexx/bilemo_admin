@@ -40,30 +40,30 @@ class ApplicationController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $uri = 'api/applications'; 
+        $uri = 'api/applications';
 
         // Create form
         $data = [
             'roles' => ['ROLE_APPLICATION']
         ];
-        $form = $this->createForm(ApplicationType::class, $data);        
+        $form = $this->createForm(ApplicationType::class, $data);
 
         // On form submit
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $handler = new ApplicationHandler();
             $newApplication = $handler->handle($request->request->get('application'));
-                        
+
             try {
                 $this->request($uri, 'POST', $newApplication);
-                $this->feedBack($request, "success", "La nouvelle application partenaire a correctement été enregistrée.");             
-            } catch (RequestException $e) {                
-                $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement de la nouvelle application partenaire.");                
+                $this->feedBack($request, "success", "La nouvelle application partenaire a correctement été enregistrée.");
+            } catch (RequestException $e) {
+                $this->feedBack($request, "danger", "Une erreur est survenue lors de l'enregistrement de la nouvelle application partenaire.");
             }
             return $this->redirectToRoute('applications');
         }
 
         return $this->render('applications/create.html.twig', [
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -82,19 +82,19 @@ class ApplicationController extends BaseController
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $handler = new ApplicationHandler();
             $newApplication = $handler->handle($request->request->get('application'));
-            
+
             try {
                 $application = $this->request($uri, 'PUT', $newApplication);
                 $this->feedBack($request, "success", "L'application partenaire a correctement été modifiée.");
             } catch (RequestException $e) {
                 $this->feedBack($request, "danger", "Une erreur est survenue lors de la modification de l'application partenaire.");
             }
-            return $this->redirectToRoute('applications');      
+            return $this->redirectToRoute('applications');
         }
 
         return $this->render('applications/update.html.twig', [
             'application' => $application,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 
@@ -122,7 +122,7 @@ class ApplicationController extends BaseController
 
         return $this->render('applications/delete.html.twig', [
             'application' => $application,
-            'form' => $form->createView() 
+            'form' => $form->createView()
         ]);
     }
 }

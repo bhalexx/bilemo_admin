@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}	
+{% block body %}
 	<div class="d-flex align-items-center justify-content-between">
         <h1 class="display-4"><span class="fas fa-eye"></span> {{ user.firstname }} {{ user.lastname }}</h1>
         <a href="{{ path('users') }}" class="btn btn-secondary">
@@ -26,10 +26,10 @@
 		    	<b>Email :</b> <a href="mailto:{{ user.email }}">{{ user.email }}</a>
 		    </p>
 		    <p class="card-text">
-		    	<b>Téléphone :</b> <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
+		    	<b>Téléphone :</b> <a href="tel:{{ user.phone }}">{{ user.phone|default('non renseigné') }}</a>
 		    </p>
 		    <p class="card-text">
-		    	<b>Inscrit(e) sur :</b> 
+		    	<b>Inscrit(e) sur :</b>
 		    	{% for application in user.applications %}
 		    		<a href="{{ path('applications_view', { id: application.id }) }}">{{ application.username }}</a>
 		    	{% endfor %}

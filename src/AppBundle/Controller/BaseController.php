@@ -25,12 +25,12 @@ abstract class BaseController extends Controller
     protected function request($uri, $method = 'GET', $body = array())
     {
         $response = null;
-        switch ($method) {   
+        switch ($method) {
             case 'POST':
                 $request = $this->getHttpClient()->post($uri, [
                     'headers' => $this->getHeaders(),
                     'body' => json_encode($body)
-                ]); 
+                ]);
                 break;
             case 'PUT':
                 $request = $this->getHttpClient()->put($uri, [
@@ -60,6 +60,6 @@ abstract class BaseController extends Controller
 
     protected function feedBack(Request $request, $type = "error", $message = "Une erreur est survenue.")
     {
-        $request->getSession()->getFlashBag()->add($type, $message); 
+        $request->getSession()->getFlashBag()->add($type, $message);
     }
 }
